@@ -1,3 +1,3 @@
 # To-DO:
 - Fix Fonts
-- Add Input Delay
+- Fix Buzz Audio
