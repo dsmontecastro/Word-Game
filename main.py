@@ -1,69 +1,71 @@
 import time
+from get_file import get_file
 
-import engine
-import interface
+import lib.engine as engine
+import lib.interface as interface
 
 
-dictionary = engine.read_file("dictionary.txt")
+dictionary = engine.read_file(get_file("assets/dictionary.txt"))
 
 if not interface.confirm("Use GUI? [Y/n]: "):
-	screen = interface.Terminal()
+    screen = interface.Terminal()
 
-	while screen.is_running():
-	# ------ GAME LAUNCH ------
-	
-		screen.clear()
+    while screen.is_running():
+        # ------ GAME LAUNCH ------
 
-		screen.start_game()
-		mode = screen.select_mode()  # Select Game Mode
-		
-		if not screen.confirm("START GAME? [Y/n]: "):  # Game Start Confirm
-			continue
+        screen.clear()
 
-		# Randomization
-		engine.seed(screen.read_input("Enter seed (Leave blank if unsure): "))
+        screen.start_game()
+        mode = screen.select_mode()  # Select Game Mode
 
-		# ------ GAME START ------
+        if not screen.confirm("START GAME? [Y/n]: "):  # Game Start Confirm
+            continue
 
-		if mode == "anagram":
-			game = engine.AnagramMode(dictionary)
-		elif mode == "combine":
-			game = engine.CombineMode(dictionary)
+        # Randomization
+        engine.seed(screen.read_input("Enter seed (Leave blank if unsure): "))
 
-		screen.chosen_word(game.word)
+        # ------ GAME START ------
 
-		while game.is_alive():
-			guess = screen.read_input()
-			
-			if guess[0:2] == "c_":  # If user typed a command
-				if guess == "c_word":
-					screen.chosen_word(game.word)
-				elif guess == "c_quit":
-					if screen.confirm("Quit? [Y/n]: "):
-						screen.running = False
-						break
-			else:
-				if game.has_guessed(guess):
-					screen.has_guessed()
-				else:
-					if game.is_correct(guess):
-						screen.on_correct(game.score)
-						if mode == "combine":
-							screen.chosen_word(game.word)
-					else:  # If user is wrong
-						screen.on_mistake(game.lives)
+        if mode == "anagram":
+            game = engine.AnagramMode(dictionary)
+        elif mode == "combine":
+            game = engine.CombineMode(dictionary)
 
-		if not screen.is_running():
-			break
+        screen.chosen_word(game.word)
 
-		# ------ POST GAME ------
-		
-		screen.calculate_score(game.score, game.max_score)
+        while game.is_alive():
+            guess = screen.read_input()
 
-		if not screen.confirm("Play Again? [Y/n]: "):
-			screen.on_exit()
-			time.sleep(3)
-			break
+            if guess[0:2] == "c_":  # If user typed a command
+                if guess == "c_word":
+                    screen.chosen_word(game.word)
+                elif guess == "c_quit":
+                    if screen.confirm("Quit? [Y/n]: "):
+                        screen.running = False
+                        break
+            else:
+                if game.has_guessed(guess):
+                    screen.has_guessed()
+                else:
+                    if game.is_correct(guess):
+                        screen.on_correct(game.score)
+                        if mode == "combine":
+                            screen.chosen_word(game.word)
+                    else:  # If user is wrong
+                        screen.on_mistake(game.lives)
+
+        if not screen.is_running():
+            break
+
+        # ------ POST GAME ------
+
+        screen.calculate_score(game.score, game.max_score)
+
+        if not screen.confirm("Play Again? [Y/n]: "):
+            screen.on_exit()
+            time.sleep(3)
+            break
+
 else:
-	import gui
-	gui.menu_screen()
+    import lib.gui as gui
+    gui.menu_screen()
