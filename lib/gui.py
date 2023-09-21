@@ -1,25 +1,29 @@
-import os, random
-import pygame as p
+import os, sys, random, pygame as p
+
 from . import engine
+from get_file import get_file
 
 p.init()
 p.mixer.init()
 p.key.set_repeat()
-dictionary = engine.read_file("assets/dictionary.txt")
 
-font_name = os.path.join("assets", "8-BIT WONDER.TTF")
+icon = p.image.load(get_file("assets/logo.ico"))
+font_name = get_file("assets/8-BIT WONDER.TTF")
+dictionary = engine.read_file(get_file("assets/dictionary.txt"))
 
 
 class Settings:  # for easy future modification/s
     def __init__(self):
-        self.name = "Word Unscrambler"
-        self.assets = os.path.relpath("Assets")
+        self.name = "Word Game"
+        self.assets = "assets"
         self.clock = p.time.Clock()
         self.width = 1280
         self.height = 720
 
         self.screen = p.display.set_mode((self.width, self.height))
         self.tag = p.display.set_caption(self.name)
+        self.icon = p.display.set_icon(icon)
+
         self.h_font = p.font.Font(font_name, 30)
         self.n_font = p.font.Font(font_name, 20)
         self.frames = 50
@@ -74,12 +78,13 @@ f_h = z.h_font
 sw, sh, sc = z.width, z.height, (z.width / 2, z.height / 2)
 
 
-def asset(x):
-    return os.path.join(a, x) + ".png"  # shortcut for calling images from \Assets
+def asset(x):  # shortcut for calling images from \Assets
+    file = os.path.join(a, x) + ".png"
+    return get_file(file)
 
 
-def collide(x, m):
-    return p.Rect(x).collidepoint(m)  # collision detection shortcut
+def collide(x, m):  # collision detection shortcut
+    return p.Rect(x).collidepoint(m)
 
 
 def seq(x, y):  # makes sure number stays in range 0-3
@@ -112,7 +117,7 @@ t_l = p.image.load(asset("T_Lives")).convert_alpha()
 t_s = p.image.load(asset("T_Score")).convert_alpha()
 t_t = p.image.load(asset("T_Time")).convert_alpha()
 tile = p.image.load(asset("Tile")).convert_alpha()
-buzz = p.mixer.Sound(a + os.path.sep + "Buzz.wav")
+buzz = p.mixer.Sound(get_file(a + "/Buzz.wav"))
 
 pause_state = 1
 
@@ -125,6 +130,7 @@ def menu_screen():  # mode and difficulty selection
     mode = ["ANAGRAM", "COMBINE", "[COMING SOON]"]
     diff = ["ZEN", "CHALLENGE", "HELL"]
     md, df = 0, 0
+
     while True:
         p.draw.rect(d, c["grey"], (sc[0] - 150, 90, 300, 46))
         md_s = f_f.render(mode[md], True, c["white"])
@@ -464,3 +470,8 @@ def button(x, y, off, on=0):  # button creation shortcut
     else:
         d.blit(b_off, (new_x, new_y))
     return (new_x, new_y, w, h)
+
+
+def quit():
+    p.quit()
+    sys.exit()
