@@ -1,9 +1,9 @@
 import os
 
 
-commands = ['help', 'word', 'quit']
-modes = ['anagram', 'combine']
-modes_short = ['a', 'c']
+commands = ["help", "word", "quit"]
+modes = ["anagram", "combine"]
+modes_short = ["a", "c"]
 
 
 # Game Launch
@@ -31,171 +31,162 @@ ON_COMBINE_START = """Welcome to Combine the Words!
 # Game Exit
 ON_EXIT = "Thank you for playing Autism Induced Word Unscrambler!"
 
+
 def ask(string, iterable):
-		"""	Asks the user for valid input.
-			The input is valid if it is found in the iterable.
-		"""
+    """Asks the user for valid input.
+    The input is valid if it is found in the iterable.
+    """
 
-		while(True):
-			response = input(string).lower().rstrip()
+    while True:
+        response = input(string).lower().rstrip()
 
-			if response in iterable:
-				return response
-			else:
-				print("Try Again.")
+        if response in iterable:
+            return response
+        else:
+            print("Try Again.")
+
 
 def confirm(string):
-		"""	Prints string and returns True or False depending on user input.
-			Only yes or no decisions are accepted.
-		"""
+    """Prints string and returns True or False depending on user input.
+    Only yes or no decisions are accepted.
+    """
 
-		decision = ask(string, ('y', 'n', 'yes', 'no'))
+    decision = ask(string, ("y", "n", "yes", "no"))
 
-		if decision in ('y', 'yes'):
-			return True
-		else:
-			return False
+    if decision in ("y", "yes"):
+        return True
+    else:
+        return False
 
 
 class Terminal:
-	"""	Sets up Terminal interface.
-	"""
+    """Sets up Terminal interface."""
 
-	def __init__(self):
-		self.running = True
+    def __init__(self):
+        self.running = True
 
-	def is_running(self):
-		if self.running:
-			return True
+    def is_running(self):
+        if self.running:
+            return True
 
-		return False
-	
+        return False
 
-	def ask(self, string, iterable):
-		"""	Asks the user for valid input.
-			The input is valid if it is found in the iterable.
-		"""
+    def ask(self, string, iterable):
+        """Asks the user for valid input.
+        The input is valid if it is found in the iterable.
+        """
 
-		while(True):
-			response = input(string).lower().rstrip()
+        while True:
+            response = input(string).lower().rstrip()
 
-			if response in iterable:
-				return response
-			else:
-				print("Try Again.")
+            if response in iterable:
+                return response
+            else:
+                print("Try Again.")
 
-	def confirm(self, string):
-		"""	Prints string and returns True or False depending on user input.
-			Only yes or no decisions are accepted.
-		"""
+    def confirm(self, string):
+        """Prints string and returns True or False depending on user input.
+        Only yes or no decisions are accepted.
+        """
 
-		decision = self.ask(string, ('y', 'n', 'yes', 'no'))
+        decision = self.ask(string, ("y", "n", "yes", "no"))
 
-		if decision in ('y', 'yes'):
-			return True
-		else:
-			return False
+        if decision in ("y", "yes"):
+            return True
+        else:
+            return False
 
-	def read_input(self, string = ""):
-		"""	Reads player input and returns data accordingly.
+    def read_input(self, string=""):
+        """Reads player input and returns data accordingly.
 
-			When a command is input, returns "c_[command_name]".
-			Otherwise, returns the string input.
-		"""
+        When a command is input, returns "c_[command_name]".
+        Otherwise, returns the string input.
+        """
 
-		while True:
-			_string = input(string).lower().rstrip()
-			
-			if _string != "":
-				if _string[0] == "/":
-					if _string[1:] in commands:
-						if _string[1:] == "help":
-							self.help()
-						else:
-							return "c_{}".format(_string[1:])
-					else:
-						print("Unknown command!")
-				else:
-					return _string
-			else:
-				return _string
-			
-	def clear(self):
-		"""	Clears the Terminal Screen
-		"""
-		
-		if os.name == "nt":
-			os.system('cls')
-		else:
-			os.system('clear')
+        while True:
+            _string = input(string).lower().rstrip()
 
-	def start_game(self):
-		"""	Prints text upon opening the game.
-		"""
+            if _string != "":
+                if _string[0] == "/":
+                    if _string[1:] in commands:
+                        if _string[1:] == "help":
+                            self.help()
+                        else:
+                            return "c_{}".format(_string[1:])
+                    else:
+                        print("Unknown command!")
+                else:
+                    return _string
+            else:
+                return _string
 
-		print(ON_LAUNCH)
+    def clear(self):
+        """Clears the Terminal Screen"""
 
-	def select_mode(self):
-		"""	Prints text to select a game mode and returns the user input.
-			Repeatedly prints text to try again if an invalid input is received.
-		"""
+        if os.name == "nt":
+            os.system("cls")
+        else:
+            os.system("clear")
 
-		print(ON_SELECT_MODE)
+    def start_game(self):
+        """Prints text upon opening the game."""
 
-		mode = self.ask("Choose Mode: ", modes + modes_short)
+        print(ON_LAUNCH)
 
-		if mode in ('anagram', 'a'):
-			print(ON_ANAGRAM_START)
-		elif mode in ('combine', 'c'):
-			print(ON_COMBINE_START)
+    def select_mode(self):
+        """Prints text to select a game mode and returns the user input.
+        Repeatedly prints text to try again if an invalid input is received.
+        """
 
-		if mode in modes:
-			return modes[modes.index(mode)]
-		else:
-			return modes[modes_short.index(mode)]
+        print(ON_SELECT_MODE)
 
-	def help(self):
-		"""	Prints help.
-		"""
-		string = "Commands: "
+        mode = self.ask("Choose Mode: ", modes + modes_short)
 
-		for word in commands:
-			string += "  /{}".format(word)
+        if mode in ("anagram", "a"):
+            print(ON_ANAGRAM_START)
+        elif mode in ("combine", "c"):
+            print(ON_COMBINE_START)
 
-		print(string)
+        if mode in modes:
+            return modes[modes.index(mode)]
+        else:
+            return modes[modes_short.index(mode)]
 
-	def has_guessed(self):
-		"""	Prints text that you already guessed that word.
-		"""
+    def help(self):
+        """Prints help."""
+        string = "Commands: "
 
-		print("You have already guessed that word! Try again.")
+        for word in commands:
+            string += "  /{}".format(word)
 
-	def on_correct(self, score):
-		"""	Triggers when a valid answer is made
-		"""
+        print(string)
 
-		print("Correct! Score: {}".format(score))
+    def has_guessed(self):
+        """Prints text that you already guessed that word."""
 
-	def on_mistake(self, retries):
-		"""	Triggers when an invalid answer is made.
-		"""
+        print("You have already guessed that word! Try again.")
 
-		print("Wrong! Retries left: {}".format(retries))
+    def on_correct(self, score):
+        """Triggers when a valid answer is made"""
 
-	def chosen_word(self, string):
-		"""	Prints the chosen word.
-		"""
+        print("Correct! Score: {}".format(score))
 
-		print("The word is: {}".format(string))
+    def on_mistake(self, retries):
+        """Triggers when an invalid answer is made."""
 
-	def calculate_score(self, score, max_score):
-		"""	Prints score.
-		"""
+        print("Wrong! Retries left: {}".format(retries))
 
-		print("Your score is: {}/{}".format(score, max_score))
+    def chosen_word(self, string):
+        """Prints the chosen word."""
 
-	def on_exit(self):
-		"""	Prints text on exit.
-		"""
-			
-		print(ON_EXIT)
+        print("The word is: {}".format(string))
+
+    def calculate_score(self, score, max_score):
+        """Prints score."""
+
+        print("Your score is: {}/{}".format(score, max_score))
+
+    def on_exit(self):
+        """Prints text on exit."""
+
+        print(ON_EXIT)
