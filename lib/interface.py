@@ -7,29 +7,30 @@ modes_short = ["a", "c"]
 
 
 # Game Launch
-ON_LAUNCH = "Hello! Welcome to the Autism Induced Word Unscrambler!\n"
+ON_LAUNCH = "Hello! Welcome to our Word Game (Demo)!\n"
+
 # Select Game Mode
 ON_SELECT_MODE = """Select a Game Mode!
 	Select the corresponding letter and press enter to start the game.
 
 	> [A]nagram: What else is there!
 	> [C]ombine: Unscramble the puzzle!
-	> [H]olocaust: Coming out Winter 2018!
+	> [H]olla: Coming out Winter 2018!
 	"""
 # Anagram Game Mode Launch
 ON_ANAGRAM_START = """Welcome to Search the Anagram!
 	Try to find all anagrams of the given string.
 
-	E.g. "Reign" -> "Ringe", "Niger",...
+	E.g. "Least" -> "Stale", "Steal", ...
 	"""
 # Combine Game Mode Launch
 ON_COMBINE_START = """Welcome to Combine the Words!
 	Try to find all words that can be formed from the string.
 
-	E.g. "Holocaust" -> "Cahoots", "Slouch", "Lust",...
+	E.g. "Least" -> "Last", "Last", "Late", ...
 	"""
 # Game Exit
-ON_EXIT = "Thank you for playing Autism Induced Word Unscrambler!"
+ON_EXIT = "Thank you for playing our Word Game (Demo)!"
 
 
 def ask(string, iterable):
